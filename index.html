@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>From Chalkboards to Chatbots</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+  /* --- 1. THEME & COLORS --- */
+  :root{
+    --paper:#FFFDF7;     
+    --surface:#FFFFFF;   
+    --ink:#1F2937;       
+    --muted:#6B7280;     
+    --border:#E7E5E4;    
+    --blue:#012169;      
+    --red:#C8102E;       
+    
+    /* Card Size Settings */
+    --card-height: 65vh; 
+    --card-width: 1000px;
+  }
+
+  /* --- 2. BASIC LAYOUT --- */
+  *{box-sizing:border-box}
+  
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; 
+  }
+
+  body{
+    background: var(--paper);
+    background-image: linear-gradient(135deg, rgba(1,33,105,.05), rgba(255,253,247,0) 35%, rgba(200,16,46,.05) 100%);
+    color:var(--ink);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* --- 3. HEADER --- */
+  header{
+    background: var(--blue);
+    color: #fff;
+    border-bottom: 4px solid var(--red);
+    padding: 12px 16px;
+    flex-shrink: 0;
+    z-index: 1000;
+    position: relative;
+  }
+  .header-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+  }
+  .logo {
+    height: 45px;
+    width: auto;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+  }
+  .headings {
+    display: flex;
+    flex-direction: column;
+  }
+  .main-title {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  .sub-title {
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 400;
+  }
+
+  /* Sound Toggle Button */
+  #sound-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  #sound-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  @media (max-width: 600px) {
+    #sound-btn {
+        position: static;
+        margin-left: auto;
+    }
+    .header-container {
+        justify-content: flex-start;
+    }
+  }
+
+  /* --- 4. MAIN STACK AREA --- */
+  main {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .stack-container {
+    position: relative;
+    width: var(--card-width);
+    max-width: 95%;
+    height: var(--card-height);
+    margin: auto; 
+  }
+
+  .slide-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    
+    cursor: pointer;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s;
+    will-change: transform, opacity;
+  }
+
+  .slide-image {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    pointer-events: none; 
+    border-radius: 12px;
+  }
+
+  /* --- WATERMARK STYLE --- */
+  .watermark {
+    position: absolute;
+    top: 15px;
+    left: 15px; /* Moved to Left */
+    width: 80px; /* Doubled size (was 40px) */
+    height: auto;
+    opacity: 0.5; 
+    pointer-events: none; 
+    z-index: 10;
+  }
+
+  .slide-card.gone {
+    transform: translateX(-120%) rotate(-15deg) !important;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* --- 5. FOOTER --- */
+  footer {
+    background: var(--blue);
+    color: #FFF;
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    flex-shrink: 0;
+    z-index: 1000;
+  }
+
+  #reset-btn {
+    margin-top: 8px;
+    background-color: var(--surface);
+    color: var(--blue);
+    border: none;
+    padding: 6px 20px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+  }
+  
+  #reset-btn:hover { 
+    transform: translateY(-2px); 
+    background-color: #fff;
+  }
+  
+  #reset-btn.hidden {
+    display: none;
+  }
+
+</style>
+</head>
+<body>
+
+<audio id="card-sound" src="1.mp3" preload="auto"></audio>
+
+<header>
+  <div class="header-container">
+    <img src="pdhub-logo.png" alt="Logo" class="logo">
+    <div class="headings">
+      <div class="main-title">From Chalkboards to Chatbots</div>
+      <div class="sub-title">A Practical AI Survival Guide for EFL Teachers</div>
+    </div>
+    
+    <button id="sound-btn" title="Toggle Sound" style="opacity: 0.6;">🔇</button>
+  </div>
+</header>
+
+<main>
+  <div class="stack-container" id="stack">
+    </div>
+</main>
+
+<footer>
+  <div>✨✍️ Created by Panagiotis Domvros, English and Drama Teacher, All Rights Reserved ✍️✨</div>
+  <button id="reset-btn" class="hidden">Start Over ↺</button>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const stackContainer = document.getElementById('stack');
+    const sound = document.getElementById('card-sound');
+    const soundBtn = document.getElementById('sound-btn');
+    const resetButton = document.getElementById('reset-btn');
+
+    // Sound State: Default to FALSE (Off)
+    let isSoundOn = false;
+
+    soundBtn.addEventListener('click', () => {
+        isSoundOn = !isSoundOn;
+        soundBtn.textContent = isSoundOn ? '🔊' : '🔇';
+        soundBtn.style.opacity = isSoundOn ? '1' : '0.6';
+    });
+
+    // 1. Define Slide Sequence
+    const slides = [];
+
+    slides.push('0');
+    for (let i = 1; i <= 15; i++) slides.push(i.toString());
+    slides.push('16a', '16b');
+    for (let i = 17; i <= 26; i++) slides.push(i.toString());
+    slides.push('27a', '27b');
+    for (let i = 28; i <= 40; i++) slides.push(i.toString());
+    slides.push('41a', '41b'); 
+    for (let i = 42; i <= 51; i++) slides.push(i.toString());
+    for (let i = 53; i <= 67; i++) slides.push(i.toString());
+
+    let totalCards = slides.length;
+    let currentIndex = 0;
+    let cardElements = [];
+
+    // 2. Build Stack
+    function createStack() {
+      stackContainer.innerHTML = ''; 
+      cardElements = [];
+      currentIndex = 0;
+      resetButton.classList.add('hidden');
+
+      slides.forEach((id, index) => {
+        const card = document.createElement('div');
+        card.className = 'slide-card';
+        card.style.zIndex = totalCards - index;
+        
+        // Add Slide Image
+        const img = document.createElement('img');
+        img.src = `${id}.png`; 
+        img.alt = `Slide ${id}`;
+        img.className = 'slide-image';
+        if (index > 2) img.loading = "lazy";
+        
+        // Add Watermark Logo
+        const watermark = document.createElement('img');
+        watermark.src = 'pdhub-logo.png';
+        watermark.className = 'watermark';
+
+        card.appendChild(img);
+        card.appendChild(watermark);
+        
+        // Add Click Listener
+        card.addEventListener('click', () => handleCardClick(card, index));
+        
+        stackContainer.appendChild(card);
+        cardElements.push(card);
+      });
+    }
+
+    // 3. Handle Interaction
+    function handleCardClick(card, index) {
+      if (index !== currentIndex) return;
+
+      if (isSoundOn && sound) {
+        sound.currentTime = 0;
+        sound.play().catch(e => console.log("Audio play prevented:", e));
+      }
+
+      card.classList.add('gone');
+      currentIndex++;
+
+      if (currentIndex === totalCards) {
+        resetButton.classList.remove('hidden');
+      }
+    }
+
+    // 4. Reset
+    resetButton.addEventListener('click', () => {
+      currentIndex = 0;
+      cardElements.forEach(card => {
+        card.classList.remove('gone');
+      });
+      resetButton.classList.add('hidden');
+    });
+
+    createStack();
+  });
+</script>
+
+</body>
+</html>
