@@ -14,7 +14,8 @@
     --muted:#6B7280;     
     --border:#E7E5E4;    
     --blue:#012169;      
-    --red:#C8102E;       
+    --red:#C8102E;
+    --green:#059669; 
     
     /* Card Size Settings */
     --card-height: 65vh; 
@@ -146,30 +147,331 @@
     align-items: center;
     padding: 10px;
     
-    cursor: pointer;
+    cursor: default; 
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s;
     will-change: transform, opacity;
   }
 
-  .slide-image {
+  /* Common style for content */
+  .slide-content {
     display: block;
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    pointer-events: none; 
     border-radius: 12px;
   }
 
-  /* --- WATERMARK STYLE --- */
+  /* --- SPECIAL HTML CARD STYLES --- */
+  .html-card-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Ensures content starts at top */
+    padding: 70px 20px 40px; /* Top padding prevents title cut-off */
+    text-align: center;
+  }
+
+  .html-card-content h2 {
+    font-size: 2rem;
+    color: var(--blue);
+    margin-bottom: 30px;
+    margin-top: 0;
+  }
+
+  /* Standard Tools Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 15px;
+    width: 100%;
+    max-width: 700px;
+    padding-bottom: 20px;
+  }
+
+  .tool-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    background: #F3F4F6;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .tool-btn:hover {
+    transform: translateY(-3px);
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  /* --- CHRISTMAS SPECIAL STYLES --- */
+  details {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+  }
+
+  summary {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--red);
+    cursor: pointer;
+    margin-bottom: 15px;
+    list-style: none;
+    text-align: center;
+    user-select: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .inner-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding-top: 10px;
+  }
+  
+  .inner-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  .inner-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 600px) {
+    .tools-grid, .inner-grid {
+        grid-template-columns: 1fr; 
+    }
+  }
+
+  /* Image specific */
+  .slide-image {
+    pointer-events: none; 
+  }
+
+  /* Video specific */
+  .slide-video {
+    pointer-events: auto;
+  }
+
+  /* --- WATERMARK (NEXT BUTTON) --- */
   .watermark {
     position: absolute;
     top: 15px;
-    left: 15px; /* Moved to Left */
-    width: 80px; /* Doubled size (was 40px) */
+    left: 15px;
+    width: 80px;
     height: auto;
-    opacity: 0.5; 
-    pointer-events: none; 
+    opacity: 0.6; 
+    pointer-events: auto; 
+    cursor: pointer;
     z-index: 10;
+    transition: all 0.2s;
+  }
+  .watermark:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  /* --- PREVIOUS BUTTON (Bottom Left) --- */
+  .prev-btn {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--border);
+    color: var(--blue);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+  }
+
+  .prev-btn:hover {
+    background: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  
+  /* --- LINK BUTTON (Bottom Right) --- */
+  .link-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 2px solid #fff;
+    color: #fff;
+    text-decoration: none;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 12;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+  }
+
+  .link-btn:hover {
+    background: var(--red);
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+
+  /* --- QR BUTTON (Top Right) --- */
+  .qr-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--ink);
+    font-weight: bold;
+    font-size: 0.8rem;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 12;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+  }
+  .qr-btn:hover {
+    transform: scale(1.1);
+    color: var(--blue);
+    border-color: var(--blue);
+  }
+
+  /* --- MIZOU BUTTON (Middle Right) --- */
+  .mizou-btn {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%); /* Centered vertically */
+    
+    width: 46px; 
+    height: 46px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--blue);
+    color: var(--blue);
+    font-weight: 800;
+    font-size: 0.65rem; 
+    text-decoration: none;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 12;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+  }
+  .mizou-btn:hover {
+    background: var(--blue);
+    color: #fff;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  /* --- MODAL FOR QR CODE --- */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .modal-image {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: #fff;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .close-modal:hover {
+    color: var(--red);
   }
 
   .slide-card.gone {
@@ -219,6 +521,13 @@
 
 <audio id="card-sound" src="1.mp3" preload="auto"></audio>
 
+<div id="qr-modal" class="modal-overlay">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <img src="qr.png" alt="QR Code" class="modal-image">
+  </div>
+</div>
+
 <header>
   <div class="header-container">
     <img src="pdhub-logo.png" alt="Logo" class="logo">
@@ -247,6 +556,19 @@
     const sound = document.getElementById('card-sound');
     const soundBtn = document.getElementById('sound-btn');
     const resetButton = document.getElementById('reset-btn');
+    
+    // Modal Elements
+    const qrModal = document.getElementById('qr-modal');
+    const closeModal = document.querySelector('.close-modal');
+
+    // Close Modal Logic
+    function hideModal() {
+        qrModal.classList.remove('show');
+    }
+    closeModal.addEventListener('click', hideModal);
+    qrModal.addEventListener('click', (e) => {
+        if(e.target === qrModal) hideModal();
+    });
 
     // Sound State: Default to FALSE (Off)
     let isSoundOn = false;
@@ -261,18 +583,76 @@
     const slides = [];
 
     slides.push('0');
-    for (let i = 1; i <= 15; i++) slides.push(i.toString());
-    slides.push('16a', '16b');
-    for (let i = 17; i <= 26; i++) slides.push(i.toString());
+    // REMOVED 10
+    for (let i = 1; i <= 15; i++) {
+        if (i === 10) continue;
+        slides.push(i.toString());
+    }
+    
+    // REMOVED 16b
+    slides.push('16a'); 
+    
+    // REMOVED 17
+    slides.push('18');
+    
+    // Video Card
+    slides.push('The Goldilocks Tech Rule.mp4'); 
+
+    // REMOVED 21 and 22
+    for (let i = 19; i <= 26; i++) {
+        if (i === 21 || i === 22) continue;
+        slides.push(i.toString());
+    }
+    
     slides.push('27a', '27b');
     for (let i = 28; i <= 40; i++) slides.push(i.toString());
     slides.push('41a', '41b'); 
-    for (let i = 42; i <= 51; i++) slides.push(i.toString());
+    
+    // Card 42 to 50
+    for (let i = 42; i <= 50; i++) slides.push(i.toString());
+    
+    // ** IMAGE CHANGER CARD **
+    slides.push('changer');
+    
+    // Card 51
+    slides.push('51');
+    
     for (let i = 53; i <= 67; i++) slides.push(i.toString());
+
+    // ** TOOLS CARD **
+    slides.push('TOOLS_CARD');
+    
+    // ** CHRISTMAS CARD **
+    slides.push('CHRISTMAS_CARD');
 
     let totalCards = slides.length;
     let currentIndex = 0;
     let cardElements = [];
+
+    // Helper: Add Link Button
+    function addLinkButton(card, url) {
+        const linkBtn = document.createElement('a');
+        linkBtn.href = url;
+        linkBtn.target = "_blank"; 
+        linkBtn.className = 'link-btn';
+        linkBtn.innerHTML = '🔗'; 
+        linkBtn.title = "Open Link";
+        linkBtn.addEventListener('click', (e) => e.stopPropagation());
+        card.appendChild(linkBtn);
+    }
+
+    // Helper: Add QR Button
+    function addQrButton(card) {
+        const qrBtn = document.createElement('div');
+        qrBtn.className = 'qr-btn';
+        qrBtn.textContent = 'QR';
+        qrBtn.title = "Show QR Code";
+        qrBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            qrModal.classList.add('show');
+        });
+        card.appendChild(qrBtn);
+    }
 
     // 2. Build Stack
     function createStack() {
@@ -281,41 +661,181 @@
       currentIndex = 0;
       resetButton.classList.add('hidden');
 
-      slides.forEach((id, index) => {
+      slides.forEach((item, index) => {
         const card = document.createElement('div');
         card.className = 'slide-card';
         card.style.zIndex = totalCards - index;
+
+        // --- CONTENT CREATION ---
         
-        // Add Slide Image
-        const img = document.createElement('img');
-        img.src = `${id}.png`; 
-        img.alt = `Slide ${id}`;
-        img.className = 'slide-image';
-        if (index > 2) img.loading = "lazy";
+        // 1. TOOLS CARD
+        if (item === 'TOOLS_CARD') {
+            const htmlContent = document.createElement('div');
+            htmlContent.className = 'html-card-content';
+            htmlContent.innerHTML = `
+              <h2>🛠️ Tools & Resources</h2>
+              <div class="tools-grid">
+                 <a href="https://domvrosepimorfosi.github.io/brisk-notebooklm/" target="_blank" class="tool-btn" style="color:var(--ink)">Brisk & NotebookLM</a>
+                 <a href="https://domvrosepimorfosi.github.io/using-magicschool/" target="_blank" class="tool-btn" style="color:#7c3aed">MagicSchool AI</a>
+                 <a href="https://domvrosepimorfosi.github.io/tech-integration/" target="_blank" class="tool-btn" style="color:#0d9488">Tech Integration</a>
+                 <a href="https://goblin.tools/" target="_blank" class="tool-btn" style="color:#d97706">Goblin Tools</a>
+                 <a href="https://classroomzen.com/" target="_blank" class="tool-btn" style="color:#4f46e5">Classroom Zen</a>
+                 <a href="https://domvrosepimorfosi.github.io/be-the-bot/" target="_blank" class="tool-btn" style="color:#C8102E">Be the Bot</a>
+                 <a href="https://domvrosepimorfosi.github.io/using-storybook/" target="_blank" class="tool-btn">Gemini Storybook</a>
+                 <a href="https://domvrosepimorfosi.github.io/ict-tools-categorised/" target="_blank" class="tool-btn">Tools by Category</a>
+                 <a href="https://domvrosepimorfosi.github.io/EFLTools-Suggested-List/" target="_blank" class="tool-btn">Suggested List</a>
+                 <a href="https://domvrosepimorfosi.github.io/ict-tools-presentation/" target="_blank" class="tool-btn">Basic ICT Tools</a>
+                 <a href="https://domvrosepimorfosi.github.io/sonnet-letmecount/" target="_blank" class="tool-btn">Sonnet Activity</a>
+                 <a href="https://pa-domvros.github.io/EFL-Shakespeare-Challenge/" target="_blank" class="tool-btn">Shakespeare Challenge</a>
+              </div>
+            `;
+            const links = htmlContent.querySelectorAll('a');
+            links.forEach(l => l.addEventListener('click', e => e.stopPropagation()));
+            card.appendChild(htmlContent);
+            
+        } 
+        // 2. CHRISTMAS CARD
+        else if (item === 'CHRISTMAS_CARD') {
+            const htmlContent = document.createElement('div');
+            htmlContent.className = 'html-card-content';
+            htmlContent.innerHTML = `
+                <details open>
+                  <summary>🎄 Christmas Special</summary>
+                  <div class="content-body">
+                    <div class="inner-grid">
+                      <a href="https://domvrosepimorfosi.github.io/Christmas-Classroom-Match/" target="_blank" class="inner-link" style="color:var(--green)">🎁 Classroom Match</a>
+                      <a href="https://domvrosepimorfosi.github.io/Dear-Santa/" target="_blank" class="inner-link" style="color:var(--red)">🎅 Dear Santa</a>
+                      <a href="https://domvrosepimorfosi.github.io/Santas-Crazy-Night/" target="_blank" class="inner-link" style="color:var(--green)">🌙 Santa's Crazy Night</a>
+                      <a href="https://domvrosepimorfosi.github.io/Christmas-Clash/" target="_blank" class="inner-link" style="color:var(--red)">⚔️ Christmas Clash</a>
+                      <a href="https://domvrosepimorfosi.github.io/Christmas-Logic-Grid-Puzzle/" target="_blank" class="inner-link" style="color:var(--green)">🧩 Logic Grid Puzzle</a>
+                      <a href="https://domvrosepimorfosi.github.io/Project-Sleigh-Ride/" target="_blank" class="inner-link" style="color:var(--red)">🛷 Project Sleigh Ride</a>
+                      <a href="https://domvrosepimorfosi.github.io/xmas-secrets/" target="_blank" class="inner-link" style="color:var(--green)">🤫 Xmas Secrets</a>
+                      <a href="https://domvrosepimorfosi.github.io/santa-abduction/" target="_blank" class="inner-link" style="color:var(--red)">🛸 Santa Abduction</a>
+                      <a href="https://domvrosepimorfosi.github.io/gift-mixup/" target="_blank" class="inner-link" style="color:var(--green)">🛍️ Gift Mix-Up</a>
+                      <a href="https://domvrosepimorfosi.github.io/mission-save-santa/" target="_blank" class="inner-link" style="color:var(--red)">🦸 Mission Save Santa</a>
+                      <a href="https://domvrosepimorfosi.github.io/christmas-grammar-save/" target="_blank" class="inner-link" style="color:var(--green)">📖 Grammar Save</a>
+                      <a href="https://domvrosepimorfosi.github.io/generational-christmas/" target="_blank" class="inner-link" style="color:var(--red)">👵 Generational Christmas</a>
+                      <a href="https://panagiotis-domvros.github.io/strange-things-at-Christmas/" target="_blank" class="inner-link" style="color:var(--green)">🔦 Stranger Things</a>
+                      <a href="https://domvrosepimorfosi.github.io/Hogwarts-Christmas/" target="_blank" class="inner-link" style="color:var(--red)">🪄 Hogwarts Christmas</a>
+                      <a href="https://domvrosepimorfosi.github.io/christmas-chase-extravaganza/" target="_blank" class="inner-link" style="color:var(--green)">🏃 Chase Extravaganza</a>
+                    </div>
+                  </div>
+                </details>
+            `;
+            const links = htmlContent.querySelectorAll('a');
+            links.forEach(l => l.addEventListener('click', e => e.stopPropagation()));
+            // Stop propagation on summary click too, to prevent card flip
+            const summary = htmlContent.querySelector('summary');
+            if(summary) summary.addEventListener('click', e => e.stopPropagation());
+            
+            card.appendChild(htmlContent);
+        }
+        // 3. Video
+        else if (item.toString().toLowerCase().endsWith('.mp4')) {
+            const vid = document.createElement('video');
+            vid.src = item;
+            vid.className = 'slide-content slide-video';
+            vid.controls = true; 
+            card.appendChild(vid);
+        } 
+        // 4. Standard Image
+        else {
+            const img = document.createElement('img');
+            img.src = `${item}.png`; 
+            img.alt = `Slide ${item}`;
+            img.className = 'slide-content slide-image';
+            if (index > 2) img.loading = "lazy";
+            card.appendChild(img);
+        }
         
-        // Add Watermark Logo
+        // --- WATERMARK (NEXT BUTTON) ---
         const watermark = document.createElement('img');
         watermark.src = 'pdhub-logo.png';
         watermark.className = 'watermark';
-
-        card.appendChild(img);
+        watermark.title = "Click to Next Slide";
         card.appendChild(watermark);
+
+        // --- PREVIOUS BUTTON ---
+        if (index > 0) { 
+            const prevBtn = document.createElement('div');
+            prevBtn.className = 'prev-btn';
+            prevBtn.innerHTML = '&#8617;'; 
+            prevBtn.title = "Previous Slide";
+            
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                handlePrevClick();
+            });
+            
+            card.appendChild(prevBtn);
+        }
+
+        // --- SPECIFIC CARD BUTTONS ---
+
+        // Card 7: SAMR Tenses
+        if (item === '7') {
+            addLinkButton(card, "https://domvrosepimorfosi.github.io/SAMR-tenses/");
+        }
+
+        // Card 12: SAMR Sonnet
+        if (item === '12') {
+            addLinkButton(card, "https://domvrosepimorfosi.github.io/SAMR-analysis-sonnet130/");
+        }
         
-        // Add Click Listener
-        card.addEventListener('click', () => handleCardClick(card, index));
+        // Card 24: TechCheck Rubric
+        if (item === '24') {
+            addLinkButton(card, "https://domvrosepimorfosi.github.io/techcheck-rubric/");
+        }
+
+        // Card 25: ICT Lesson Planner
+        if (item === '25') {
+            addLinkButton(card, "https://domvrosepimorfosi.github.io/ICT-LessonPlanner/");
+        }
+
+        // Card 35: Mizou Chatbot & QR Code & Mizou Link
+        if (item === '35') {
+            addLinkButton(card, "https://domvrosepimorfosi.github.io/mizou-chatbot/");
+            addQrButton(card);
+            
+            const mizouBtn = document.createElement('a');
+            mizouBtn.href = "https://mizou.com/bot";
+            mizouBtn.target = "_blank";
+            mizouBtn.className = 'mizou-btn';
+            mizouBtn.textContent = 'Mizou';
+            mizouBtn.title = "Open Mizou Bot";
+            mizouBtn.addEventListener('click', (e) => e.stopPropagation());
+            card.appendChild(mizouBtn);
+        }
+
+        // Card 40: AI Ideation Race
+        if (item === '40') {
+            addLinkButton(card, "https://domvrosepimorfosi.github.io/ai-ideation-race/");
+        }
+        
+        // --- NEXT CLICK LISTENER (Attached ONLY to Watermark) ---
+        watermark.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            handleCardNext(card, index);
+        });
         
         stackContainer.appendChild(card);
         cardElements.push(card);
       });
     }
 
-    // 3. Handle Interaction
-    function handleCardClick(card, index) {
+    // 3. Handle NEXT (Dismiss Card)
+    function handleCardNext(card, index) {
       if (index !== currentIndex) return;
 
       if (isSoundOn && sound) {
         sound.currentTime = 0;
         sound.play().catch(e => console.log("Audio play prevented:", e));
+      }
+
+      // If it's a video, pause it before removing card
+      const videoElement = card.querySelector('video');
+      if (videoElement) {
+          videoElement.pause();
       }
 
       card.classList.add('gone');
@@ -326,11 +846,29 @@
       }
     }
 
-    // 4. Reset
+    // 4. Handle PREVIOUS (Restore Card)
+    function handlePrevClick() {
+        if (currentIndex <= 0) return; 
+
+        currentIndex--;
+        const cardToRestore = cardElements[currentIndex];
+        
+        if (cardToRestore) {
+            cardToRestore.classList.remove('gone');
+        }
+
+        if (currentIndex < totalCards) {
+            resetButton.classList.add('hidden');
+        }
+    }
+
+    // 5. Reset All
     resetButton.addEventListener('click', () => {
       currentIndex = 0;
       cardElements.forEach(card => {
         card.classList.remove('gone');
+        const vid = card.querySelector('video');
+        if(vid) vid.currentTime = 0;
       });
       resetButton.classList.add('hidden');
     });
