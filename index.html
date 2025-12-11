@@ -212,6 +212,40 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   }
 
+  /* --- PILL BUTTONS (For Gamification Card) --- */
+  .pill-btn {
+    position: absolute;
+    padding: 10px 18px;
+    background: #fff;
+    border: 2px solid var(--blue);
+    color: var(--blue);
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    z-index: 20;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  .pill-btn:hover {
+    background: var(--blue);
+    color: #fff;
+    transform: scale(1.05);
+  }
+  .pill-btn.top-right {
+    top: 15px;
+    right: 15px;
+  }
+  .pill-btn.bottom-right {
+    bottom: 15px;
+    right: 15px;
+  }
+
   /* --- CHRISTMAS SPECIAL STYLES --- */
   details {
     width: 100%;
@@ -583,8 +617,15 @@
     const slides = [];
 
     slides.push('0');
-    // REMOVED 10
-    for (let i = 1; i <= 15; i++) {
+    
+    // Cards 1-5
+    for (let i = 1; i <= 5; i++) slides.push(i.toString());
+
+    // ** GAMIFICATION CARD (Between 5 and 6) **
+    slides.push('gamification');
+
+    // Cards 6-15 (Skipping 10)
+    for (let i = 6; i <= 15; i++) {
         if (i === 10) continue;
         slides.push(i.toString());
     }
@@ -771,6 +812,27 @@
         }
 
         // --- SPECIFIC CARD BUTTONS ---
+
+        // NEW: Gamification Card Buttons
+        if (item === 'gamification') {
+            // Top Right
+            const btn1 = document.createElement('a');
+            btn1.href = "https://domvrosepimorfosi.github.io/Speed-Pantry/";
+            btn1.target = "_blank";
+            btn1.className = 'pill-btn top-right';
+            btn1.textContent = "Gamification";
+            btn1.addEventListener('click', (e) => e.stopPropagation());
+            card.appendChild(btn1);
+
+            // Bottom Right
+            const btn2 = document.createElement('a');
+            btn2.href = "https://domvrosepimorfosi.github.io/The-Picky-Customer/";
+            btn2.target = "_blank";
+            btn2.className = 'pill-btn bottom-right';
+            btn2.textContent = "Digital Game";
+            btn2.addEventListener('click', (e) => e.stopPropagation());
+            card.appendChild(btn2);
+        }
 
         // Card 7: SAMR Tenses
         if (item === '7') {
